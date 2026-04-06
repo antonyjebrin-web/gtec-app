@@ -1,0 +1,20 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.item {
+  min-height: 320px;
+}
+
+@media (max-width: 520px) {
+  .grid {
+    gap: 12px;
+  }
+  .item {
+    min-height: 300px;
+  }
+}
+
