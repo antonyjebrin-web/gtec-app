@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import styles from './App.module.css';
-import { ThemeToggle } from './components/theme/ThemeToggle';
 import { CourseShowcase } from './features/courses/CourseShowcase';
 import SplashCursor from './components/SplashCursor';
+import Silk from './components/Silk';
+import ScrollFloat from './components/ScrollFloat';
 
 // #region agent log
 const debugLog = (runId: string, hypothesisId: string, location: string, message: string, data: Record<string, unknown>) => {
@@ -90,11 +91,17 @@ export default function App() {
   const isGallery = route === '#/gallery';
 
   return (
-    
+
     <>
 
-  
-  
+      <Silk
+        speed={5}
+        scale={1}
+        color="#7B7481"
+        noiseIntensity={1.5}
+        rotation={0}
+      />
+
       <SplashCursor />
 
       <div className={styles.page}>
@@ -106,8 +113,8 @@ export default function App() {
                   className={styles.brandLogo}
                   src="/gtec-logo.png"
                   alt="G-TEC"
-                  width={42}
-                  height={42}
+                  width={64}
+                  height={64}
                 />
                 <h1 className={styles.title}>G-TEC Course Showcase</h1>
               </div>
@@ -131,9 +138,8 @@ export default function App() {
                     Gallery
                   </a>
                   <a href="#">Career</a>
-                  <a href="#">About</a>
+                  <a href="#/contact">Contact Us</a>
                 </nav>
-                <ThemeToggle variant="mini" />
               </div>
             </div>
             {!isGallery ? (
@@ -173,44 +179,52 @@ export default function App() {
                   </div>
                   <CourseShowcase />
 
-                  <div className={styles.contactForm}>
-                    <form className={styles.form}>
-                      <div className={styles.formGroup}>
-                        <label className={styles.formLabel}>NAME:</label>
-                        <input className={styles.formInput} type="text" />
-                      </div>
+                 <div className={styles.contactForm + " " + styles.electricBorder}>
+  {/* Glow layers */}
+  <div className={styles.ebLayers}>
+    <div className={styles.ebGlow1}></div>
+    <div className={styles.ebGlow2}></div>
+    <div className={styles.ebBackgroundGlow}></div>
+  </div>
 
-                      <div className={styles.formGroup}>
-                        <label className={styles.formLabel}>EMAIL:</label>
-                        <input className={styles.formInput} type="email" />
-                      </div>
+  {/* Form content */}
+  <div className={styles.ebContent}>
+    <form className={styles.form}>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>NAME:</label>
+        <input className={styles.formInput} type="text" placeholder='Enter ur name here'/>
+      </div>
 
-                      <div className={styles.formGroup}>
-                        <label className={styles.formLabel}>SELECT COURSE:</label>
-                        <select className={styles.formSelect}>
-                          <option>Select a course</option>
-                          <option>Web Development</option>
-                          <option>UI/UX Design</option>
-                          <option>Data Science</option>
-                          <option>DevOps</option>
-                        </select>
-                      </div>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>EMAIL:</label>
+        <input className={styles.formInput} type="email" placeholder='Enter ur EMAIL here'/>
+      </div>
 
-                      <div className={styles.formGroup}>
-                        <label className={styles.formLabel}>PHONE NUMBER:</label>
-                        <input className={styles.formInput} type="tel" />
-                      </div>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>SELECT COURSE:</label>
+        <select className={styles.formSelect}>
+          <option>Select a course</option>
+          <option>Web Development</option>
+          <option>UI/UX Design</option>
+          <option>Data Science</option>
+          <option>DevOps</option>
+        </select>
+      </div>
 
-                      <button className={styles.formButton}>SUBMIT</button>
-                    </form>
-                  </div>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>PHONE NUMBER:</label>
+        <input className={styles.formInput} type="tel" placeholder='Enter ur phone number here'/>
+      </div>
+
+      <button className={styles.formButton}>SUBMIT</button>
+    </form>
+  </div>
+</div>
                 </>
               ) : (
                 <div className={styles.galleryPage}>
                   <h2 className={styles.galleryTitle}>Our G-TEC Memorys Welcomes U</h2>
-                  <p className={styles.gallerySubtitle}>
-                    A special gallery from <code>public/assist</code>.
-                  </p>
+                
                   <div className={styles.galleryGrid}>
                     {galleryImages.map((fileName) => (
                       <figure key={fileName} className={styles.galleryCard}>

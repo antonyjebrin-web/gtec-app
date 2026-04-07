@@ -3,7 +3,7 @@
   --bg: #fff5e1;
   --surface: #ffffff;
   --surface2: #f1f5ff;
-  --text: #0f172a;
+  --text: #fafcff;
   --muted: #475569;
   --border: rgba(15, 23, 42, 0.12);
   --shadow: rgba(2, 6, 23, 0.12);
@@ -15,9 +15,8 @@
 
   --grid-max: 1120px;
 }
-
+/* Dark theme animated gradient background */
 html[data-theme='dark'] {
-  color-scheme: dark;
   --bg: #070a12;
   --surface: #0b1220;
   --surface2: rgba(255, 255, 255, 0.06);
@@ -26,6 +25,30 @@ html[data-theme='dark'] {
   --border: rgba(255, 255, 255, 0.14);
   --shadow: rgba(0, 0, 0, 0.45);
   --focus: rgba(99, 102, 241, 0.9);
+
+  /* Gradient background */
+  background: linear-gradient(270deg, #0b1220, #1a1f2e, #0b1220, #161a2c, #0b1220);
+  background-size: 1000% 1000%;
+  animation: gradientMove 20s ease infinite;
+  color-scheme: dark;
+}
+
+/* Smooth gradient animation */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Optional: subtle noise overlay for texture */
+html[data-theme='dark']::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>') repeat;
+  opacity: 0.03;
+  z-index: 9999;
 }
 
 *,
@@ -49,7 +72,7 @@ body {
 }
 
 a {
-  color: inherit;
+  color: white;
   text-decoration: none;
 }
 
