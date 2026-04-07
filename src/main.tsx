@@ -4,6 +4,7 @@ import App from './App';
 import { ThemeProvider } from './components/theme/ThemeProvider';
 import './styles/global.css';
 
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ThemeProvider>
     <App />

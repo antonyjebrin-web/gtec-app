@@ -1,132 +1,234 @@
+import { useEffect, useMemo, useState } from 'react';
 import styles from './App.module.css';
 import { ThemeToggle } from './components/theme/ThemeToggle';
 import { CourseShowcase } from './features/courses/CourseShowcase';
+import SplashCursor from './components/SplashCursor';
+
+// #region agent log
+const debugLog = (runId: string, hypothesisId: string, location: string, message: string, data: Record<string, unknown>) => {
+  const payload = {
+    sessionId: '0486f5',
+    runId,
+    hypothesisId,
+    location,
+    message,
+    data,
+    timestamp: Date.now(),
+  };
+
+  fetch('http://127.0.0.1:7290/ingest/1ab03694-5888-4324-ac17-e07d205b1058', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0486f5' },
+    body: JSON.stringify(payload),
+  }).catch(() => {});
+
+  // Fallback path for environments where CORS/preflight blocks the primary request.
+  fetch('http://127.0.0.1:7290/ingest/1ab03694-5888-4324-ac17-e07d205b1058', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload),
+  }).catch(() => {});
+};
+// #endregion
+
+
 
 export default function App() {
-  return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <div className="gtec-container">
-          <div className={styles.headerInner}>
-            <div className={styles.brand}>
-              <img
-                className={styles.brandLogo}
-                src="/gtec-logo.png"
-                alt="G-TEC"
-                width={42}
-                height={42}
-              />
-              <h1 className={styles.title}>G-TEC Course Showcase</h1>
-            </div>
-            <div className={styles.rightTop}>
-              <nav className={styles.nav} aria-label="Top navigation">
-                <a href="#">Home</a>
-                <a href="#">Services</a>
-                <a href="#">Internship</a>
-                <a href="#">Gallery</a>
-                <a href="#">Career</a>
-                <a href="#">About</a>
-              </nav>
-              <ThemeToggle variant="mini" />
-            </div>
-          </div>
-          <p className={styles.subtitle}>
-            Explore career-focused programs with a responsive 3D course card experience.
-          </p>
-        </div>
-      </header>
+  const [route, setRoute] = useState<string>(() => window.location.hash || '#/');
+  const galleryImages = useMemo(
+    () => [
+      'Gemini_Generated_Image_15zbeh15zbeh15zb.png',
+      'Gemini_Generated_Image_64utf564utf564ut.png',
+      'Gemini_Generated_Image_lghswmlghswmlghs.png',
+      'Gemini_Generated_Image_m9nh8im9nh8im9nh.png',
+      'IMG_20250116_123812.jpg',
+      'IMG_20250116_123900.jpg',
+      'IMG_20250116_123924.jpg',
+      'IMG_20250116_124048.jpg',
+      'IMG_20250116_124158.jpg',
+      'IMG_20250116_124235.jpg',
+      'IMG_20250116_124258.jpg',
+    ],
+    [],
+  );
 
-      <main className={styles.main}>
-        <section className={styles.section}>
+  useEffect(() => {
+    // #region agent log
+    debugLog('pre-fix', 'H1', 'src/App.tsx:mount', 'App mounted with current location', {
+      pathname: window.location.pathname,
+      hash: window.location.hash,
+      href: window.location.href,
+    });
+    // #endregion
+  }, []);
+
+  useEffect(() => {
+    const onHashChange = () => {
+      setRoute(window.location.hash || '#/');
+      // #region agent log
+      debugLog('pre-fix', 'H3', 'src/App.tsx:hashchange', 'Hash changed after nav interaction', {
+        pathname: window.location.pathname,
+        hash: window.location.hash,
+      });
+      // #endregion
+    };
+
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  useEffect(() => {
+    // #region agent log
+    debugLog('pre-fix', 'H4', 'src/App.tsx:route-state', 'Route state updated', {
+      route,
+      galleryImageCount: galleryImages.length,
+    });
+    // #endregion
+  }, [route, galleryImages.length]);
+
+  const isGallery = route === '#/gallery';
+
+  return (
+    
+    <>
+
+  
+  
+      <SplashCursor />
+
+      <div className={styles.page}>
+        <header className={styles.header}>
           <div className="gtec-container">
-            <div className={`hero-banner ${styles.hero}`} aria-label="Course showcase banner">
-              <div className="carousel">
-                <div className="carousel-inner">
-                  <div className="carousel-item active">
-                    <div className="hero-item">
-                      <video
-                        className="hero-video lg-video"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        preload="metadata"
-                      >
-                        <source src="/course-hero.mp4" type="video/mp4" />
-                      </video>
-                      <div className={styles.heroOverlay} aria-hidden="true" />
-                      <div className={styles.heroSweep} aria-hidden="true" />
-                    </div>
-                  </div>
-                </div>
+            <div className={styles.headerInner}>
+              <div className={styles.brand}>
+                <img
+                  className={styles.brandLogo}
+                  src="/gtec-logo.png"
+                  alt="G-TEC"
+                  width={42}
+                  height={42}
+                />
+                <h1 className={styles.title}>G-TEC Course Showcase</h1>
+              </div>
+              <div className={styles.rightTop}>
+                <nav className={styles.nav} aria-label="Top navigation">
+                  <a href="#/">Home</a>
+                  <a href="#">Services</a>
+                  <a href="#">Internship</a>
+                  <a
+                    href="#/gallery"
+                    onClick={() => {
+                      // #region agent log
+                      debugLog('pre-fix', 'H2', 'src/App.tsx:gallery-link', 'Gallery link clicked', {
+                        hrefAttr: '#/gallery',
+                        pathnameBeforeClick: window.location.pathname,
+                        hashBeforeClick: window.location.hash,
+                      });
+                      // #endregion
+                    }}
+                  >
+                    Gallery
+                  </a>
+                  <a href="#">Career</a>
+                  <a href="#">About</a>
+                </nav>
+                <ThemeToggle variant="mini" />
               </div>
             </div>
-            <CourseShowcase />
-            <div className={styles.contactForm}>
-              <form className={styles.form}>
-                <div className={styles.formGroup}>
-                  <label className={styles.formLabel} htmlFor="name">
-                    NAME:
-                  </label>
-                  <input
-                    className={styles.formInput}
-                    id="name"
-                    name="name"
-                    type="text"
-                    placeholder="Enter your name"
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label className={styles.formLabel} htmlFor="email">
-                    EMAIL:
-                  </label>
-                  <input
-                    className={styles.formInput}
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Enter your email"
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label className={styles.formLabel} htmlFor="course">
-                    SELECT COURSE:
-                  </label>
-                  <select className={styles.formSelect} id="course" name="course">
-                    <option value="">Select a course</option>
-                    <option value="web-development">Web Development</option>
-                    <option value="ui-ux-design">UI/UX Design</option>
-                    <option value="data-science">Data Science</option>
-                    <option value="devops">DevOps</option>
-                  </select>
-                </div>
-                <div className={styles.formGroup}>
-                  <label className={styles.formLabel} htmlFor="phone">
-                    PHONE NUMBER:
-                  </label>
-                  <input
-                    className={styles.formInput}
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    placeholder="Enter your phone number"
-                  />
-                </div>
-                <button className={styles.formButton} type="submit">
-                  SUBMIT
-                </button>
-              </form>
-            </div>
+            {!isGallery ? (
+              <p className={styles.subtitle}>
+                Explore career-focused programs with a responsive 3D course card experience.
+              </p>
+            ) : null}
           </div>
-        </section>
-      </main>
-    </div>
-    
+        </header>
 
+        <main className={styles.main}>
+          <section className={styles.section}>
+            <div className="gtec-container">
+              {!isGallery ? (
+                <>
+                  <div className={`hero-banner ${styles.hero}`} aria-label="Course showcase banner">
+                    <div className="carousel">
+                      <div className="carousel-inner">
+                        <div className="carousel-item active">
+                          <div className="hero-item">
+                            <video
+                              className="hero-video lg-video"
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                              preload="metadata"
+                            >
+                              <source src="/course-hero.mp4" type="video/mp4" />
+                            </video>
+                            <div className={styles.heroOverlay} />
+                            <div className={styles.heroSweep} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <CourseShowcase />
 
+                  <div className={styles.contactForm}>
+                    <form className={styles.form}>
+                      <div className={styles.formGroup}>
+                        <label className={styles.formLabel}>NAME:</label>
+                        <input className={styles.formInput} type="text" />
+                      </div>
 
+                      <div className={styles.formGroup}>
+                        <label className={styles.formLabel}>EMAIL:</label>
+                        <input className={styles.formInput} type="email" />
+                      </div>
 
+                      <div className={styles.formGroup}>
+                        <label className={styles.formLabel}>SELECT COURSE:</label>
+                        <select className={styles.formSelect}>
+                          <option>Select a course</option>
+                          <option>Web Development</option>
+                          <option>UI/UX Design</option>
+                          <option>Data Science</option>
+                          <option>DevOps</option>
+                        </select>
+                      </div>
 
+                      <div className={styles.formGroup}>
+                        <label className={styles.formLabel}>PHONE NUMBER:</label>
+                        <input className={styles.formInput} type="tel" />
+                      </div>
+
+                      <button className={styles.formButton}>SUBMIT</button>
+                    </form>
+                  </div>
+                </>
+              ) : (
+                <div className={styles.galleryPage}>
+                  <h2 className={styles.galleryTitle}>Our G-TEC Memorys Welcomes U</h2>
+                  <p className={styles.gallerySubtitle}>
+                    A special gallery from <code>public/assist</code>.
+                  </p>
+                  <div className={styles.galleryGrid}>
+                    {galleryImages.map((fileName) => (
+                      <figure key={fileName} className={styles.galleryCard}>
+                        <img
+                          src={`/assist/${fileName}`}
+                          alt={fileName}
+                          className={styles.galleryImage}
+                          loading="lazy"
+                        />
+                      </figure>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+        </main>
+      </div>
+    </>
   );
 }
-
