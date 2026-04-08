@@ -39,7 +39,7 @@ function mockCoursesApi() {
 export default defineConfig({
   plugins: [react(), mockCoursesApi()],
   server: {
-    port: 5173,
+    port:5174,
     strictPort: true,
   },
 });

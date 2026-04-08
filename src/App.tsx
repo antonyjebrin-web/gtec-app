@@ -3,6 +3,7 @@ import styles from './App.module.css';
 import { CourseShowcase } from './features/courses/CourseShowcase';
 import SplashCursor from './components/SplashCursor';
 import Silk from './components/Silk';
+import ContactForm from './components/ContactForm';
 
 // #region agent log
 const debugLog = (runId: string, hypothesisId: string, location: string, message: string, data: Record<string, unknown>) => {
@@ -74,6 +75,7 @@ export default function App() {
   }, []);
 
   const isGallery = route === '#/gallery';
+  const isContact = route === '#/contact';
 
   return (
     <>
@@ -114,7 +116,9 @@ export default function App() {
         <main className={styles.main}>
           <section className={styles.section}>
             <div className="gtec-container">
-              {!isGallery ? (
+              {isContact ? (
+                <ContactForm />
+              ) : !isGallery ? (
                 <>
                   <div className={`hero-banner ${styles.hero}`} aria-label="Course showcase banner">
                     <div className="carousel">
@@ -139,6 +143,7 @@ export default function App() {
                     </div>
                   </div>
                   <CourseShowcase />
+                  
                 </>
               ) : (
                 <div className={styles.galleryPage}>
@@ -157,10 +162,15 @@ export default function App() {
                   </div>
                 </div>
               )}
+              
             </div>
           </section>
+           
+           
+          
         </main>
       </div>
+      
     </>
   );
 }

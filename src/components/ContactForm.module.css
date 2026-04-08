@@ -1,0 +1,125 @@
+.contactFormPage {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 560px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.formTitle {
+  margin: 0 0 0.25rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f1f1f;
+  text-align: center;
+}
+
+.formSubtitle {
+  margin: 0 1rem 1.75rem;
+  color: #616161;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.successMessage,
+.errorMessage {
+  padding: 1rem 1.2rem;
+  border-radius: 14px;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.successMessage {
+  background-color: #2f855a;
+  color: #fff;
+}
+
+.errorMessage {
+  background-color: #e53e3e;
+  color: #fff;
+}
+
+.form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.formGroup {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  font-size: 1rem;
+  border: 1.8px solid #d4d4d4;
+  border-radius: 14px;
+  background: #fbfbfb;
+  color: #1a1a1a;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #7b7481;
+  box-shadow: 0 0 0 4px rgba(123, 116, 129, 0.12);
+  background: #fff;
+}
+
+.select {
+  appearance: none;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #7b7481 0%, #5a535e 100%);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submitButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 32px rgba(123, 116, 129, 0.2);
+}
+
+@media (max-width: 640px) {
+  .formWrapper {
+    padding: 1.75rem;
+  }
+
+  .formTitle {
+    font-size: 1.75rem;
+  }
+}
