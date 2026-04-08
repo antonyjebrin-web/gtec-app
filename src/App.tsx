@@ -3,27 +3,15 @@ import styles from './App.module.css';
 import { CourseShowcase } from './features/courses/CourseShowcase';
 import SplashCursor from './components/SplashCursor';
 import Silk from './components/Silk';
-import ScrollFloat from './components/ScrollFloat';
 
 // #region agent log
 const debugLog = (runId: string, hypothesisId: string, location: string, message: string, data: Record<string, unknown>) => {
-  const payload = {
-    sessionId: '0486f5',
-    runId,
-    hypothesisId,
-    location,
-    message,
-    data,
-    timestamp: Date.now(),
-  };
-
+  const payload = { sessionId: '0486f5', runId, hypothesisId, location, message, data, timestamp: Date.now() };
   fetch('http://127.0.0.1:7290/ingest/1ab03694-5888-4324-ac17-e07d205b1058', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '0486f5' },
     body: JSON.stringify(payload),
   }).catch(() => {});
-
-  // Fallback path for environments where CORS/preflight blocks the primary request.
   fetch('http://127.0.0.1:7290/ingest/1ab03694-5888-4324-ac17-e07d205b1058', {
     method: 'POST',
     mode: 'no-cors',
@@ -32,8 +20,6 @@ const debugLog = (runId: string, hypothesisId: string, location: string, message
   }).catch(() => {});
 };
 // #endregion
-
-
 
 export default function App() {
   const [route, setRoute] = useState<string>(() => window.location.hash || '#/');
@@ -50,58 +36,48 @@ export default function App() {
       'IMG_20250116_124158.jpg',
       'IMG_20250116_124235.jpg',
       'IMG_20250116_124258.jpg',
+      '2026-01-10.jpg',
+      'unnamed.jpg',
+      'unnamed (1).jpg'
     ],
     [],
   );
 
+  // Split text into spans for "pressure effect"
   useEffect(() => {
-    // #region agent log
-    debugLog('pre-fix', 'H1', 'src/App.tsx:mount', 'App mounted with current location', {
-      pathname: window.location.pathname,
-      hash: window.location.hash,
-      href: window.location.href,
-    });
-    // #endregion
+    const title = document.getElementById('title');
+    if (!title) return;
+    const text = title.innerText;
+    title.innerHTML = text.split('').map((char) => `<span>${char}</span>`).join('');
+    const spans = title.querySelectorAll('span');
+
+    const handleMouseMove = (e: MouseEvent) => {
+      spans.forEach((span) => {
+        const rect = span.getBoundingClientRect();
+        const dx = e.clientX - (rect.left + rect.width / 2);
+        const dy = e.clientY - (rect.top + rect.height / 2);
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const scale = Math.max(1, 1.8 - dist / 200);
+        span.style.transform = `scale(${scale})`;
+        span.style.opacity = `${Math.max(0.6, 1 - dist / 300)}`;
+      });
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => document.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   useEffect(() => {
-    const onHashChange = () => {
-      setRoute(window.location.hash || '#/');
-      // #region agent log
-      debugLog('pre-fix', 'H3', 'src/App.tsx:hashchange', 'Hash changed after nav interaction', {
-        pathname: window.location.pathname,
-        hash: window.location.hash,
-      });
-      // #endregion
-    };
-
+    const onHashChange = () => setRoute(window.location.hash || '#/');
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  useEffect(() => {
-    // #region agent log
-    debugLog('pre-fix', 'H4', 'src/App.tsx:route-state', 'Route state updated', {
-      route,
-      galleryImageCount: galleryImages.length,
-    });
-    // #endregion
-  }, [route, galleryImages.length]);
-
   const isGallery = route === '#/gallery';
 
   return (
-
     <>
-
-      <Silk
-        speed={5}
-        scale={1}
-        color="#7B7481"
-        noiseIntensity={1.5}
-        rotation={0}
-      />
-
+      <Silk speed={5} scale={1} color="#7B7481" noiseIntensity={1.5} rotation={0} />
       <SplashCursor />
 
       <div className={styles.page}>
@@ -116,37 +92,22 @@ export default function App() {
                   width={64}
                   height={64}
                 />
-                <h1 className={styles.title}>G-TEC Course Showcase</h1>
+                <h1 id="title" className={styles.title}>NAGERCOIL</h1>
               </div>
               <div className={styles.rightTop}>
                 <nav className={styles.nav} aria-label="Top navigation">
-                  <a href="#/">Home</a>
-                  <a href="#">Services</a>
-                  <a href="#">Internship</a>
-                  <a
-                    href="#/gallery"
-                    onClick={() => {
-                      // #region agent log
-                      debugLog('pre-fix', 'H2', 'src/App.tsx:gallery-link', 'Gallery link clicked', {
-                        hrefAttr: '#/gallery',
-                        pathnameBeforeClick: window.location.pathname,
-                        hashBeforeClick: window.location.hash,
-                      });
-                      // #endregion
-                    }}
-                  >
-                    Gallery
-                  </a>
-                  <a href="#">Career</a>
+                  <p className={styles.hand}>&#128073;&#xfe0e;</p>
+                  <a href="#/Home">Home</a>
+                  <a href="#/gallery">Gallery</a>
                   <a href="#/contact">Contact Us</a>
                 </nav>
               </div>
             </div>
-            {!isGallery ? (
+            {!isGallery && (
               <p className={styles.subtitle}>
                 Explore career-focused programs with a responsive 3D course card experience.
               </p>
-            ) : null}
+            )}
           </div>
         </header>
 
@@ -178,53 +139,10 @@ export default function App() {
                     </div>
                   </div>
                   <CourseShowcase />
-
-                 <div className={styles.contactForm + " " + styles.electricBorder}>
-  {/* Glow layers */}
-  <div className={styles.ebLayers}>
-    <div className={styles.ebGlow1}></div>
-    <div className={styles.ebGlow2}></div>
-    <div className={styles.ebBackgroundGlow}></div>
-  </div>
-
-  {/* Form content */}
-  <div className={styles.ebContent}>
-    <form className={styles.form}>
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>NAME:</label>
-        <input className={styles.formInput} type="text" placeholder='Enter ur name here'/>
-      </div>
-
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>EMAIL:</label>
-        <input className={styles.formInput} type="email" placeholder='Enter ur EMAIL here'/>
-      </div>
-
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>SELECT COURSE:</label>
-        <select className={styles.formSelect}>
-          <option>Select a course</option>
-          <option>Web Development</option>
-          <option>UI/UX Design</option>
-          <option>Data Science</option>
-          <option>DevOps</option>
-        </select>
-      </div>
-
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>PHONE NUMBER:</label>
-        <input className={styles.formInput} type="tel" placeholder='Enter ur phone number here'/>
-      </div>
-
-      <button className={styles.formButton}>SUBMIT</button>
-    </form>
-  </div>
-</div>
                 </>
               ) : (
                 <div className={styles.galleryPage}>
-                  <h2 className={styles.galleryTitle}>Our G-TEC Memorys Welcomes U</h2>
-                
+                  <h2 className={styles.galleryTitle}>Our G-TEC Memories Welcomes U</h2>
                   <div className={styles.galleryGrid}>
                     {galleryImages.map((fileName) => (
                       <figure key={fileName} className={styles.galleryCard}>
