@@ -142,6 +142,7 @@ html[data-theme='dark'] .iconWrap {
   letter-spacing: -0.02em;
   position: relative;
   z-index: 1;
+  color: blue;
 }
 
 .desc {

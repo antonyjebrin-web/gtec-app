@@ -110,7 +110,7 @@ Name: John Doe
 Email: john@example.com
 Phone: 1234567890
 Course: Full Stack
-Address: 123 Main Street, Nagercoil
+Address: 123 Main Street, Nagerbil
 ================================
 ```
 

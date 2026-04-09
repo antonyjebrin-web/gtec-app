@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import styles from './App.module.css';
 import { CourseShowcase } from './features/courses/CourseShowcase';
 import SplashCursor from './components/SplashCursor';
-import Silk from './components/Silk';
 import ContactForm from './components/ContactForm';
+import ColorBends from './components/ColorBends';
 
 // #region agent log
 const debugLog = (runId: string, hypothesisId: string, location: string, message: string, data: Record<string, unknown>) => {
@@ -30,13 +30,6 @@ export default function App() {
       'Gemini_Generated_Image_64utf564utf564ut.png',
       'Gemini_Generated_Image_lghswmlghswmlghs.png',
       'Gemini_Generated_Image_m9nh8im9nh8im9nh.png',
-      'IMG_20250116_123812.jpg',
-      'IMG_20250116_123900.jpg',
-      'IMG_20250116_123924.jpg',
-      'IMG_20250116_124048.jpg',
-      'IMG_20250116_124158.jpg',
-      'IMG_20250116_124235.jpg',
-      'IMG_20250116_124258.jpg',
       '2026-01-10.jpg',
       'unnamed.jpg',
       'unnamed (1).jpg'
@@ -79,8 +72,21 @@ export default function App() {
 
   return (
     <>
-      <Silk speed={5} scale={1} color="#7B7481" noiseIntensity={1.5} rotation={0} />
       <SplashCursor />
+      <ColorBends
+        colors={["#ff5c7a", "#8a5cff", "#00ffd1"]}
+        rotation={0}
+        speed={0.2}
+        scale={1}
+        frequency={1}
+        warpStrength={1}
+        mouseInfluence={1}
+        parallax={0.5}
+        noise={0.1}
+        transparent
+        autoRotate={0}
+        color=""
+      />
 
       <div className={styles.page}>
         <header className={styles.header}>
